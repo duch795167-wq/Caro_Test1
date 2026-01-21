@@ -84,7 +84,7 @@ namespace Caro
             Button oldButton = new Button() { Width = 0, Location = new Point(0, 0) };
             for (int i = 0; i < Cons.CHESS_BOARD_HEIGHT; i++)
             {
-                //Matrix.Add(new List<Button>());
+                Matrix.Add(new List<Button>());
                 for (int j = 0; j < Cons.CHESS_BOARD_WIDTH; j++)
                 {
                     Button btn = new Button()
@@ -92,10 +92,14 @@ namespace Caro
                         Width = Cons.CHESS_WIDTH,
                         Height = Cons.CHESS_HEIGHT,
                         Location = new Point(oldButton.Location.X + oldButton.Width, oldButton.Location.Y),
-                        BackgroundImageLayout = ImageLayout.Stretch
+                        BackgroundImageLayout = ImageLayout.Stretch,
+                        Tag = i.ToString()
                     };
                     btn.Click += btn_Click; 
                     ChessBoard.Controls.Add(btn);
+
+                    Matrix[i].Add(btn);
+
                     oldButton = btn;
                 }
                 oldButton.Location = new Point(0, oldButton.Location.Y + Cons.CHESS_HEIGHT);
@@ -114,7 +118,86 @@ namespace Caro
 
             Mark(btn);
             ChangePlayer();
+
+            if (isEndGame(btn))
+            {
+                EndGame();
+            }
         }
+
+        private void EndGame()
+        {
+            MessageBox.Show("Ket thuc game!");
+        }
+
+        private bool isEndGame(Button btn)
+        {
+
+            return isEndHorizontal(btn) || isEndVertical(btn) || isEndPrimary(btn) || isEndSub(btn);
+        }
+
+        private Point GetChessPoint(Button btn)
+        {
+            int vertical = Convert.ToInt32(btn.Tag);
+            int horizontal = Matrix[vertical].IndexOf(btn);
+
+            Point point = new Point(horizontal,vertical);
+
+            return point;
+        }
+
+        private bool isEndHorizontal(Button btn)
+        {
+            Point point = GetChessPoint(btn);
+            int countLeft = 0;
+            for (int i = point.X; i >=0; i--)
+            {
+                if (Matrix[point.Y][i].BackgroundImage == btn.BackgroundImage)
+                {
+                    countLeft++;
+                }
+                else 
+                    break;
+
+            }
+
+
+            int countRight = 0;
+            for (int i = point.X + 1; i < Cons.CHESS_BOARD_WIDTH; i++)
+            {
+                if (Matrix[point.Y][i].BackgroundImage == btn.BackgroundImage)
+                {
+                    countRight++;
+                }
+                else
+                    break;
+
+            }   
+
+            return countLeft + countRight >= 5;
+        }
+
+        private bool isEndVertical(Button btn)
+        {
+
+            return false;
+        }
+
+        private bool isEndPrimary(Button btn)
+        {
+
+            return false;
+        }
+
+        private bool isEndSub(Button btn)
+        {
+
+            return false;
+        }
+
+        
+
+
 
         private void Mark(Button btn)
         {
