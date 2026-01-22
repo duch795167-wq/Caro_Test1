@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Form1));
             this.pnl_chessBoard = new System.Windows.Forms.Panel();
             this.panel2 = new System.Windows.Forms.Panel();
@@ -37,8 +38,9 @@
             this.button1 = new System.Windows.Forms.Button();
             this.textBox2 = new System.Windows.Forms.TextBox();
             this.img_Player = new System.Windows.Forms.PictureBox();
-            this.progressBar1 = new System.Windows.Forms.ProgressBar();
+            this.prcb_CoolDown = new System.Windows.Forms.ProgressBar();
             this.txt_PlayerName = new System.Windows.Forms.TextBox();
+            this.tm_CountDown = new System.Windows.Forms.Timer(this.components);
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel3.SuspendLayout();
@@ -84,7 +86,7 @@
             this.panel3.Controls.Add(this.button1);
             this.panel3.Controls.Add(this.textBox2);
             this.panel3.Controls.Add(this.img_Player);
-            this.panel3.Controls.Add(this.progressBar1);
+            this.panel3.Controls.Add(this.prcb_CoolDown);
             this.panel3.Controls.Add(this.txt_PlayerName);
             this.panel3.Location = new System.Drawing.Point(729, 287);
             this.panel3.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
@@ -132,13 +134,13 @@
             this.img_Player.TabIndex = 2;
             this.img_Player.TabStop = false;
             // 
-            // progressBar1
+            // prcb_CoolDown
             // 
-            this.progressBar1.Location = new System.Drawing.Point(4, 44);
-            this.progressBar1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(140, 23);
-            this.progressBar1.TabIndex = 1;
+            this.prcb_CoolDown.Location = new System.Drawing.Point(4, 44);
+            this.prcb_CoolDown.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.prcb_CoolDown.Name = "prcb_CoolDown";
+            this.prcb_CoolDown.Size = new System.Drawing.Size(140, 23);
+            this.prcb_CoolDown.TabIndex = 1;
             // 
             // txt_PlayerName
             // 
@@ -148,6 +150,10 @@
             this.txt_PlayerName.ReadOnly = true;
             this.txt_PlayerName.Size = new System.Drawing.Size(140, 22);
             this.txt_PlayerName.TabIndex = 0;
+            // 
+            // tm_CountDown
+            // 
+            this.tm_CountDown.Tick += new System.EventHandler(this.tm_CountDown_Tick);
             // 
             // Form1
             // 
@@ -179,9 +185,10 @@
         private System.Windows.Forms.Button button1;
         private System.Windows.Forms.TextBox textBox2;
         private System.Windows.Forms.PictureBox img_Player;
-        private System.Windows.Forms.ProgressBar progressBar1;
+        private System.Windows.Forms.ProgressBar prcb_CoolDown;
         private System.Windows.Forms.TextBox txt_PlayerName;
         private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Timer tm_CountDown;
     }
 }
 

@@ -56,6 +56,33 @@ namespace Caro
             get { return matrix; }
             set { matrix = value; }
         }
+
+        private event EventHandler playerMarked;
+        public event EventHandler PlayerMarked
+        {
+            add
+            {
+                playerMarked += value;
+            }
+            remove
+            {
+                playerMarked -= value;
+            }
+        }
+
+        private event EventHandler endedGame;
+        public event EventHandler EndedGame
+        {
+            add
+            {
+                endedGame += value;
+            }
+            remove
+            {
+                endedGame -= value;
+            }
+        }
+
         #endregion
 
         #region Initialize
@@ -80,6 +107,7 @@ namespace Caro
         #region Methods
         public void DrawChessBoard()
         {
+            ChessBoard.Enabled = true;
             Matrix = new List<List<Button>>();
             Button oldButton = new Button() { Width = 0, Location = new Point(0, 0) };
             for (int i = 0; i < Cons.CHESS_BOARD_HEIGHT; i++)
@@ -119,15 +147,24 @@ namespace Caro
             Mark(btn);
             ChangePlayer();
 
+            if (playerMarked != null)
+            {
+                playerMarked(this, new EventArgs());
+            }
+
             if (isEndGame(btn))
             {
                 EndGame();
             }
+                
         }
 
-        private void EndGame()
+        public void EndGame()
         {
-            MessageBox.Show("Ket thuc game!");
+            if(endedGame != null)
+            {
+                endedGame(this,new EventArgs());
+            }
         }
 
         private bool isEndGame(Button btn)
@@ -180,19 +217,93 @@ namespace Caro
         private bool isEndVertical(Button btn)
         {
 
-            return false;
+            Point point = GetChessPoint(btn);
+            int countUp = 0;
+            for (int i = point.Y; i >= 0; i--)
+            {
+                if (Matrix[i][point.X].BackgroundImage == btn.BackgroundImage)
+                {
+                    countUp++;
+                }
+                else
+                    break;
+
+            }
+
+
+            int countDown = 0;
+            for (int i = point.Y + 1; i < Cons.CHESS_BOARD_HEIGHT; i++)
+            {
+                if (Matrix[i][point.X].BackgroundImage == btn.BackgroundImage)
+                {
+                    countDown++;
+                }
+                else
+                    break;
+
+            }
+
+            return countUp + countDown >= 5;
         }
 
         private bool isEndPrimary(Button btn)
         {
+            Point point = GetChessPoint(btn);
 
-            return false;
+            int countUpLeft = 0;
+            // Lên - Trái (X--, Y--)
+            for (int x = point.X, y = point.Y; x >= 0 && y >= 0; x--, y--)
+            {
+                if (Matrix[y][x].BackgroundImage == btn.BackgroundImage)
+                    countUpLeft++;
+                else
+                    break;
+            }
+            int countDownRight = 0;
+            // Xuống - Phải (X++, Y++)
+            for (int x = point.X + 1, y = point.Y + 1;
+                 x < Cons.CHESS_BOARD_WIDTH && y < Cons.CHESS_BOARD_HEIGHT;
+                 x++, y++)
+            {
+                if (Matrix[y][x].BackgroundImage == btn.BackgroundImage)
+                    countDownRight++;
+                else
+                    break;
+            }
+
+            return countUpLeft + countDownRight >= 5;
         }
 
         private bool isEndSub(Button btn)
         {
 
-            return false;
+            Point point = GetChessPoint(btn);
+
+            int countUpRight = 0;
+            // Lên - Phải (X++, Y--)
+            for (int x = point.X, y = point.Y;
+                 x < Cons.CHESS_BOARD_WIDTH && y >= 0;
+                 x++, y--)
+            {
+                if (Matrix[y][x].BackgroundImage == btn.BackgroundImage)
+                    countUpRight++;
+                else
+                    break;
+            }
+
+            int countDownLeft = 0;
+            // Xuống - Trái (X--, Y++)
+            for (int x = point.X - 1, y = point.Y + 1;
+                 x >= 0 && y < Cons.CHESS_BOARD_HEIGHT;
+                 x--, y++)
+            {
+                if (Matrix[y][x].BackgroundImage == btn.BackgroundImage)
+                    countDownLeft++;
+                else
+                    break;
+            }
+
+            return countUpRight + countDownLeft >= 5;
         }
 
         

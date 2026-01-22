@@ -22,9 +22,47 @@ namespace Caro
         {
             InitializeComponent();
             ChessBoard = new ChessBoardManager(pnl_chessBoard,txt_PlayerName,img_Player);
+            ChessBoard.EndedGame += ChessBoard_EndedGame;
+            ChessBoard.PlayerMarked += ChessBoard_PlayerMarked;
+
+
+            prcb_CoolDown.Step = Cons.COOL_DOWN_STEP;
+            prcb_CoolDown.Maximum = Cons.COOL_DOWN_TIME;
+            prcb_CoolDown.Value = 0;
+            tm_CountDown.Interval = Cons.COOL_DOWN_INTERVAL;
+
             ChessBoard.DrawChessBoard();
+            tm_CountDown.Start();
         }
 
-        
+        void EndGame()
+        {
+            tm_CountDown.Stop();
+            pnl_chessBoard.Enabled = false;
+            MessageBox.Show("Ket thuc");
+
+        }
+
+        private void ChessBoard_PlayerMarked(object sender, EventArgs e)
+        {
+            tm_CountDown.Start();
+            prcb_CoolDown.Value = 0;
+        }
+
+        private void ChessBoard_EndedGame(object sender, EventArgs e)
+        {
+            EndGame();
+        }
+
+        private void tm_CountDown_Tick(object sender, EventArgs e)
+        {
+            prcb_CoolDown.PerformStep();
+            if(prcb_CoolDown.Value >= prcb_CoolDown.Maximum)
+            {
+                
+                EndGame();
+                
+            }
+        }
     }
 }
