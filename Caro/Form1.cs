@@ -31,8 +31,8 @@ namespace Caro
             prcb_CoolDown.Value = 0;
             tm_CountDown.Interval = Cons.COOL_DOWN_INTERVAL;
 
-            ChessBoard.DrawChessBoard();
-            tm_CountDown.Start();
+            NewGame();
+            
         }
 
         void EndGame()
@@ -41,6 +41,19 @@ namespace Caro
             pnl_chessBoard.Enabled = false;
             MessageBox.Show("Ket thuc");
 
+        }
+
+        void NewGame()
+        {
+            ChessBoard.DrawChessBoard();
+        }
+
+        void QuitGame()
+        {
+            if(MessageBox.Show("Ban co chac muon thoat","Thong bao", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+               Application.Exit();
+            }
         }
 
         private void ChessBoard_PlayerMarked(object sender, EventArgs e)
@@ -63,6 +76,16 @@ namespace Caro
                 EndGame();
                 
             }
+        }
+
+        private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            NewGame();
+        }
+
+        private void quitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            QuitGame();
         }
     }
 }
