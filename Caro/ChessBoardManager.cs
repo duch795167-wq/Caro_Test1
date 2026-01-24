@@ -98,8 +98,7 @@ namespace Caro
                 new Player("Cuong7Nui",Image.FromFile("D:\\Laptrinhmang\\Caro\\Caro\\Resources\\x.png")),
                 
             };
-            CurrentPlayer = 0;
-            ChangePlayer();
+            
         }
 
         #endregion
@@ -108,6 +107,9 @@ namespace Caro
         public void DrawChessBoard()
         {
             ChessBoard.Enabled = true;
+            ChessBoard.Controls.Clear();
+            CurrentPlayer = 0;
+            ChangePlayer();
             Matrix = new List<List<Button>>();
             Button oldButton = new Button() { Width = 0, Location = new Point(0, 0) };
             for (int i = 0; i < Cons.CHESS_BOARD_HEIGHT; i++)
