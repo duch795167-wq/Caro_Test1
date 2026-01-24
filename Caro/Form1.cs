@@ -35,8 +35,6 @@ namespace Caro
             
         }
 
-
-        #region Methods
         void EndGame()
         {
             tm_CountDown.Stop();
@@ -47,11 +45,7 @@ namespace Caro
 
         void NewGame()
         {
-            prcb_CoolDown.Value = 0;
-            tm_CountDown.Stop();
             ChessBoard.DrawChessBoard();
-
-            
         }
 
         void QuitGame()
@@ -93,13 +87,5 @@ namespace Caro
         {
             QuitGame();
         }
-
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (MessageBox.Show("Ban co chac muon thoat", "Thong bao", MessageBoxButtons.OKCancel) != DialogResult.OK)
-                e.Cancel = true;
-        }
-
-        #endregion
     }
 }
