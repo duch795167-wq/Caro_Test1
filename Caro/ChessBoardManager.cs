@@ -104,6 +104,18 @@ namespace Caro
         #endregion
 
         #region Methods
+
+        public void MarkRemote(int x, int y)
+        {
+            Button btn = Matrix[y][x];
+
+            if (btn.BackgroundImage != null)
+                return;
+
+            btn.BackgroundImage = Player[CurrentPlayer].Mark;
+            CurrentPlayer = CurrentPlayer == 1 ? 0 : 1;
+            ChangePlayer();
+        }
         public void DrawChessBoard()
         {
             ChessBoard.Enabled = true;
@@ -142,12 +154,15 @@ namespace Caro
         private void btn_Click(object sender, EventArgs e)
         {
             Button btn = sender as Button;
+
             if (btn.BackgroundImage != null) 
                 return;
 
 
             Mark(btn);
             ChangePlayer();
+
+
 
             if (playerMarked != null)
             {
@@ -307,9 +322,6 @@ namespace Caro
 
             return countUpRight + countDownLeft >= 5;
         }
-
-        
-
 
 
         private void Mark(Button btn)

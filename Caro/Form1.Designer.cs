@@ -35,8 +35,8 @@
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel3 = new System.Windows.Forms.Panel();
             this.label1 = new System.Windows.Forms.Label();
-            this.button1 = new System.Windows.Forms.Button();
-            this.textBox2 = new System.Windows.Forms.TextBox();
+            this.btnLAN = new System.Windows.Forms.Button();
+            this.txtIP = new System.Windows.Forms.TextBox();
             this.img_Player = new System.Windows.Forms.PictureBox();
             this.prcb_CoolDown = new System.Windows.Forms.ProgressBar();
             this.txt_PlayerName = new System.Windows.Forms.TextBox();
@@ -45,6 +45,7 @@
             this.menuToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.newGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.txtStatus = new System.Windows.Forms.TextBox();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel3.SuspendLayout();
@@ -88,8 +89,8 @@
             // 
             this.panel3.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panel3.Controls.Add(this.label1);
-            this.panel3.Controls.Add(this.button1);
-            this.panel3.Controls.Add(this.textBox2);
+            this.panel3.Controls.Add(this.btnLAN);
+            this.panel3.Controls.Add(this.txtIP);
             this.panel3.Controls.Add(this.img_Player);
             this.panel3.Controls.Add(this.prcb_CoolDown);
             this.panel3.Controls.Add(this.txt_PlayerName);
@@ -109,24 +110,25 @@
             this.label1.TabIndex = 5;
             this.label1.Text = "5 in line to win";
             // 
-            // button1
+            // btnLAN
             // 
-            this.button1.Location = new System.Drawing.Point(4, 126);
-            this.button1.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(140, 23);
-            this.button1.TabIndex = 4;
-            this.button1.Text = "LAN";
-            this.button1.UseVisualStyleBackColor = true;
+            this.btnLAN.Location = new System.Drawing.Point(4, 126);
+            this.btnLAN.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.btnLAN.Name = "btnLAN";
+            this.btnLAN.Size = new System.Drawing.Size(140, 23);
+            this.btnLAN.TabIndex = 4;
+            this.btnLAN.Text = "LAN";
+            this.btnLAN.UseVisualStyleBackColor = true;
+            this.btnLAN.Click += new System.EventHandler(this.btnLAN_Click);
             // 
-            // textBox2
+            // txtIP
             // 
-            this.textBox2.Location = new System.Drawing.Point(4, 84);
-            this.textBox2.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
-            this.textBox2.Name = "textBox2";
-            this.textBox2.Size = new System.Drawing.Size(140, 22);
-            this.textBox2.TabIndex = 3;
-            this.textBox2.Text = "127.0.0.1";
+            this.txtIP.Location = new System.Drawing.Point(4, 84);
+            this.txtIP.Margin = new System.Windows.Forms.Padding(3, 2, 3, 2);
+            this.txtIP.Name = "txtIP";
+            this.txtIP.Size = new System.Drawing.Size(140, 22);
+            this.txtIP.TabIndex = 3;
+            this.txtIP.Text = "127.0.0.1";
             // 
             // img_Player
             // 
@@ -194,11 +196,20 @@
             this.quitToolStripMenuItem.Text = "Quit";
             this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
+            // txtStatus
+            // 
+            this.txtStatus.Location = new System.Drawing.Point(766, 623);
+            this.txtStatus.Multiline = true;
+            this.txtStatus.Name = "txtStatus";
+            this.txtStatus.Size = new System.Drawing.Size(239, 162);
+            this.txtStatus.TabIndex = 4;
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1005, 796);
+            this.Controls.Add(this.txtStatus);
             this.Controls.Add(this.panel3);
             this.Controls.Add(this.panel2);
             this.Controls.Add(this.pnl_chessBoard);
@@ -227,8 +238,8 @@
         private System.Windows.Forms.Panel panel2;
         private System.Windows.Forms.PictureBox pictureBox1;
         private System.Windows.Forms.Panel panel3;
-        private System.Windows.Forms.Button button1;
-        private System.Windows.Forms.TextBox textBox2;
+        private System.Windows.Forms.Button btnLAN;
+        private System.Windows.Forms.TextBox txtIP;
         private System.Windows.Forms.PictureBox img_Player;
         private System.Windows.Forms.ProgressBar prcb_CoolDown;
         private System.Windows.Forms.TextBox txt_PlayerName;
@@ -238,6 +249,7 @@
         private System.Windows.Forms.ToolStripMenuItem menuToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem newGameToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
+        private System.Windows.Forms.TextBox txtStatus;
     }
 }
 
