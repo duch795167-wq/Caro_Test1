@@ -36,8 +36,8 @@ class Program
         NetworkStream s2 = p2.GetStream();
 
         // Phân lượt
-        Send(p1, "START|X\n"); // p1 đi trước
-        Send(p2, "START|O\n");
+        Send(p1, "START|O\n"); // p1 đi trước
+        Send(p2, "START|X\n");
 
         try
         {

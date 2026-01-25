@@ -31,18 +31,22 @@ namespace Caro
         public Form1()
         {
             InitializeComponent();
+            
             ChessBoard = new ChessBoardManager(pnl_chessBoard,txt_PlayerName,img_Player);
+            
             ChessBoard.EndedGame += ChessBoard_EndedGame;
             ChessBoard.PlayerMarked += ChessBoard_PlayerMarked;
 
+            ChessBoard.PlayerMoved += ChessBoard_PlayerMoved;
 
             prcb_CoolDown.Step = Cons.COOL_DOWN_STEP;
             prcb_CoolDown.Maximum = Cons.COOL_DOWN_TIME;
             prcb_CoolDown.Value = 0;
             tm_CountDown.Interval = Cons.COOL_DOWN_INTERVAL;
 
-
             
+
+
             NewGame();
             
         }
@@ -59,11 +63,12 @@ namespace Caro
 
         void NewGame()
         {
+            
             prcb_CoolDown.Value = 0;
             tm_CountDown.Stop();
             ChessBoard.DrawChessBoard();
+            pnl_chessBoard.Enabled = false;
 
-            
         }
 
         void QuitGame()
@@ -141,10 +146,11 @@ namespace Caro
         {
             try
             {
-                byte[] buffer = new byte[1024];
+                
 
                 while (true)
                 {
+                    byte[] buffer = new byte[1024];
                     int bytesRead = stream.Read(buffer, 0, buffer.Length);
                     if (bytesRead == 0) break;
 
@@ -166,8 +172,8 @@ namespace Caro
                             string role = parts[1]; // X hoặc O
 
                             txtStatus.Text = $"Bắt đầu game - Bạn là {role}";
-                            pnl_chessBoard.Enabled = (role == "X");
-                            myTurn = (role == "X"); // X đi trước
+                            pnl_chessBoard.Enabled = (role == "O");
+                            myTurn = (role == "O"); // O đi trước
                         }
 
                         // 3️⃣ Nhận nước đi
@@ -189,7 +195,29 @@ namespace Caro
                 MessageBox.Show("Mất kết nối server");
             }
         }
+        void ChessBoard_PlayerMoved(int x, int y)
+        {
+            if (!myTurn) return;   // không phải lượt mình → bỏ
 
+            SendMove(x, y);
+
+            myTurn = false;
+            pnl_chessBoard.Enabled = false;
+        }
+
+        void SendMove(int x, int y)
+        {
+            try
+            {
+                string msg = $"MOVE|{x}|{y}\n";
+                byte[] data = Encoding.UTF8.GetBytes(msg);
+                stream.Write(data, 0, data.Length);
+            }
+            catch
+            {
+                MessageBox.Show("Lỗi gửi nước đi");
+            }
+        }
 
     }
 }

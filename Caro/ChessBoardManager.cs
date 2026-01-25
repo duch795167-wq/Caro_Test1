@@ -83,6 +83,8 @@ namespace Caro
             }
         }
 
+        public event Action<int, int> PlayerMoved;
+
         #endregion
 
         #region Initialize
@@ -113,7 +115,7 @@ namespace Caro
                 return;
 
             btn.BackgroundImage = Player[CurrentPlayer].Mark;
-            CurrentPlayer = CurrentPlayer == 1 ? 0 : 1;
+            Mark(btn);
             ChangePlayer();
         }
         public void DrawChessBoard()
@@ -160,9 +162,13 @@ namespace Caro
 
 
             Mark(btn);
+
+            Point p = GetChessPoint(btn);
+            PlayerMoved?.Invoke(p.X, p.Y);
+
             ChangePlayer();
 
-
+            playerMarked?.Invoke(this, EventArgs.Empty);
 
             if (playerMarked != null)
             {
