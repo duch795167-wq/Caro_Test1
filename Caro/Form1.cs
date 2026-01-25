@@ -6,6 +6,7 @@ using System.Drawing;
 using System.IO;
 using System.Linq;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -53,12 +54,22 @@ namespace Caro
 
 
         #region Methods
-        void EndGame()
+        void EndGame(string typeEnd)
         {
             tm_CountDown.Stop();
             pnl_chessBoard.Enabled = false;
-            MessageBox.Show("Ket thuc");
+            
+            if(typeEnd == "TIMEOUT")
+            {
+                MessageBox.Show("Da het gio");
+                SendTimeOut();
 
+            }
+            else if(typeEnd == "WIN")
+            {
+                MessageBox.Show("Da co nguoi thang");
+                SendEnd();
+            }
         }
 
         void NewGame()
@@ -81,13 +92,16 @@ namespace Caro
 
         private void ChessBoard_PlayerMarked(object sender, EventArgs e)
         {
-            tm_CountDown.Start();
+            if(myTurn)
+                tm_CountDown.Start();
+            else
+                tm_CountDown.Stop();
             prcb_CoolDown.Value = 0;
         }
 
         private void ChessBoard_EndedGame(object sender, EventArgs e)
         {
-            EndGame();
+            EndGame("");
         }
 
         private void tm_CountDown_Tick(object sender, EventArgs e)
@@ -95,8 +109,8 @@ namespace Caro
             prcb_CoolDown.PerformStep();
             if(prcb_CoolDown.Value >= prcb_CoolDown.Maximum)
             {
-                
-                EndGame();
+                string typeEnd = "TIMEOUT";
+                EndGame(typeEnd);
                 
             }
         }
@@ -146,8 +160,6 @@ namespace Caro
         {
             try
             {
-                
-
                 while (true)
                 {
                     byte[] buffer = new byte[1024];
@@ -162,18 +174,22 @@ namespace Caro
                         if (message == "WAIT")
                         {
                             txtStatus.Text = "Đang chờ đối thủ...";
+                            btnLAN.Enabled = false;
                             pnl_chessBoard.Enabled = false;
                         }
 
                         // 2️⃣ Bắt đầu game
                         else if (message.StartsWith("START"))
                         {
+                            btnLAN.Enabled = false;
                             string[] parts = message.Split('|');
                             string role = parts[1]; // X hoặc O
 
                             txtStatus.Text = $"Bắt đầu game - Bạn là {role}";
                             pnl_chessBoard.Enabled = (role == "O");
                             myTurn = (role == "O"); // O đi trước
+                            prcb_CoolDown.Value = 0;
+                            
                         }
 
                         // 3️⃣ Nhận nước đi
@@ -182,11 +198,30 @@ namespace Caro
                             string[] parts = message.Split('|');
                             int x = int.Parse(parts[1]);
                             int y = int.Parse(parts[2]);
+                            this.Invoke((MethodInvoker)(() =>
+                            {
+                                ChessBoard.MarkRemote(x, y);
+                                myTurn = true;
+                                pnl_chessBoard.Enabled = true;
+                                prcb_CoolDown.Value = 0;
+                                tm_CountDown.Start(); // ❗ tới lượt mình → chạy timer
+                            }));
 
-                            ChessBoard.MarkRemote(x, y);
-                            myTurn = true;
-                            pnl_chessBoard.Enabled = true;
+                            
                         }
+
+                        else if (message.StartsWith("TIMEOUT"))
+                        {
+                            string[] parts = message.Split('|');
+                            string winner = parts[1] == "P1"?"P2":"P1";
+                            this.Invoke((MethodInvoker)(() =>
+                            {
+                                
+                                txtStatus.AppendText(Environment.NewLine + $"Người thắng: {winner}");
+                               
+                            }));
+                        }
+
                     }));
                 }
             }
@@ -203,6 +238,9 @@ namespace Caro
 
             myTurn = false;
             pnl_chessBoard.Enabled = false;
+            
+            prcb_CoolDown.Enabled = false;
+            prcb_CoolDown.Value = 0;
         }
 
         void SendMove(int x, int y)
@@ -212,10 +250,55 @@ namespace Caro
                 string msg = $"MOVE|{x}|{y}\n";
                 byte[] data = Encoding.UTF8.GetBytes(msg);
                 stream.Write(data, 0, data.Length);
+
+                myTurn = false;
+                tm_CountDown.Stop();
+                pnl_chessBoard.Enabled = false;
+                prcb_CoolDown.Enabled = false;
+                prcb_CoolDown.Value = 0;
+                
+            
             }
             catch
             {
                 MessageBox.Show("Lỗi gửi nước đi");
+            }
+        }
+
+        void SendTimeOut()
+        {
+            try
+            {
+                string msg = "TIMEOUT\n";
+                byte[] data = Encoding.UTF8.GetBytes(msg);
+                stream.Write(data, 0, data.Length);
+
+
+            }
+            catch
+            {
+                MessageBox.Show("Lỗi end game");
+            }
+        }
+        void SendEnd()
+        {
+            try
+            {
+                string msg = "Endgame\n";
+                byte[] data = Encoding.UTF8.GetBytes(msg);
+                stream.Write(data, 0, data.Length);
+
+                myTurn = false;
+                tm_CountDown.Stop();
+                pnl_chessBoard.Enabled = false;
+                prcb_CoolDown.Enabled = false;
+                prcb_CoolDown.Value = 0;
+
+
+            }
+            catch
+            {
+                MessageBox.Show("Lỗi end game");
             }
         }
 

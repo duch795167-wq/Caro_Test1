@@ -1,6 +1,8 @@
 ﻿using System;
+using System.ComponentModel;
 using System.Net;
 using System.Net.Sockets;
+using System.Reflection;
 using System.Text;
 using System.Threading;
 
@@ -47,23 +49,46 @@ class Program
                 if (s1.DataAvailable)
                 {
                     string msg = Receive(s1);
+                    
                     if (msg == null) break;
 
-                    Console.WriteLine("P1: " + msg.Trim());
-                    Send(p2, msg);
+                    if (msg.StartsWith("MOVE"))
+                    {
+                        Send(p2, msg);
+                    }
+                    else if(msg.StartsWith("TIMEOUT"))
+                    {
+                        
+                        Send(p1, "TIMEOUT|P1\n");
+                        Send(p2, "TIMEOUT|P1\n");
+                        Thread.Sleep(100);
+                        
+                    }
+
                 }
 
                 // Nhận từ player 2 → gửi cho player 1
                 if (s2.DataAvailable)
                 {
                     string msg = Receive(s2);
+                    
                     if (msg == null) break;
 
-                    Console.WriteLine("P2: " + msg.Trim());
-                    Send(p1, msg);
+                    if (msg.StartsWith("MOVE"))
+                    {
+                        Send(p1, msg);
+                    }
+                    else if (msg.StartsWith("TIMEOUT"))
+                    {
+
+                        Send(p1, "TIMEOUT|P2\n");
+                        Send(p2, "TIMEOUT|P2\n");
+                        Thread.Sleep(100);
+
+                    }
                 }
 
-                Thread.Sleep(1); // tránh CPU 100%
+                Thread.Sleep(10); // tránh CPU 100%
             }
         }
         catch
