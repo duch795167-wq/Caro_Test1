@@ -8,6 +8,7 @@ using System.Threading;
 
 class Program
 {
+    
     static void Main()
     {
         TcpListener server = new TcpListener(IPAddress.Any, 9999);
@@ -29,6 +30,7 @@ class Program
             Thread gameThread = new Thread(() => HandleGame(player1, player2));
             gameThread.IsBackground = true;
             gameThread.Start();
+            
         }
     }
 
@@ -45,40 +47,48 @@ class Program
         {
             while (true)
             {
+
                 // Nhận từ player 1 → gửi cho player 2
+                
+                
+
                 if (s1.DataAvailable)
                 {
-                    string msg = Receive(s1);
-                    
-                    if (msg == null) break;
-
-                    if (msg.StartsWith("MOVE"))
+                    string msg1 = Receive(s1);
+                    if (msg1 == null)
                     {
-                        Send(p2, msg);
+                        Send(p2, "OUT|Người chơi 1 đã thoát");
+                        break;
                     }
-                    else if(msg.StartsWith("TIMEOUT"))
+                    
+
+                    if (msg1.StartsWith("MOVE"))
                     {
-                        
+                        Send(p2, msg1);
+                    }
+                    else if (msg1.StartsWith("TIMEOUT"))
+                    {
+
                         Send(p1, "TIMEOUT|P1\n");
                         Send(p2, "TIMEOUT|P1\n");
                         Thread.Sleep(100);
-                        
                     }
-
                 }
 
                 // Nhận từ player 2 → gửi cho player 1
                 if (s2.DataAvailable)
                 {
-                    string msg = Receive(s2);
-                    
-                    if (msg == null) break;
-
-                    if (msg.StartsWith("MOVE"))
+                    string msg2 = Receive(s2);
+                    if (msg2 == null)
                     {
-                        Send(p1, msg);
+                        Send(p1, "OUT|Người chơi 2 đã thoát");
+                        break;
                     }
-                    else if (msg.StartsWith("TIMEOUT"))
+                    if (msg2.StartsWith("MOVE"))
+                    {
+                        Send(p1, msg2);
+                    }
+                    else if (msg2.StartsWith("TIMEOUT"))
                     {
 
                         Send(p1, "TIMEOUT|P2\n");
@@ -94,6 +104,10 @@ class Program
         catch
         {
             Console.WriteLine("Mot nguoi choi da thoat");
+            p1.Close();
+            Console.WriteLine("Đã ngắt kết nối player1");
+            p2.Close();
+            Console.WriteLine("Đã ngắt kết nối player2");
         }
         finally
         {
@@ -110,9 +124,18 @@ class Program
 
     static string Receive(NetworkStream stream)
     {
-        byte[] buffer = new byte[1024];
-        int bytes = stream.Read(buffer, 0, buffer.Length);
-        if (bytes <= 0) return null;
-        return Encoding.UTF8.GetString(buffer, 0, bytes);
+        try
+        {
+            byte[] buffer = new byte[1024];
+            int bytes = stream.Read(buffer, 0, buffer.Length);
+            if (bytes <= 0) return null;
+            return Encoding.UTF8.GetString(buffer, 0, bytes);
+        }
+
+        catch
+        {
+            return null;
+        }
+        
     }
 }

@@ -96,8 +96,9 @@ namespace Caro
             this.PlayerMark = mark;
             Player = new List<Player>() 
             { 
-                new Player("Bi9Chuot",Image.FromFile("D:\\Laptrinhmang\\Caro\\Caro\\Resources\\o.png")),
-                new Player("Cuong7Nui",Image.FromFile("D:\\Laptrinhmang\\Caro\\Caro\\Resources\\x.png")),
+                new Player("Player1",Image.FromFile("D:\\Laptrinhmang\\Caro\\Caro\\Resources\\o.png")),
+                new Player("Player2",Image.FromFile("D:\\Laptrinhmang\\Caro\\Caro\\Resources\\x.png")),
+
                 
             };
             

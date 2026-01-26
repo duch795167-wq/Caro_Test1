@@ -21,7 +21,6 @@ namespace Caro
         #region Properties 
 
         ChessBoardManager  ChessBoard;
-        SocketManager socket = new SocketManager();
         TcpClient client;
         NetworkStream stream;
         Thread receiveThread;
@@ -106,13 +105,14 @@ namespace Caro
 
         private void tm_CountDown_Tick(object sender, EventArgs e)
         {
-            prcb_CoolDown.PerformStep();
+            
             if(prcb_CoolDown.Value >= prcb_CoolDown.Maximum)
             {
                 string typeEnd = "TIMEOUT";
                 EndGame(typeEnd);
                 
             }
+            prcb_CoolDown.PerformStep();
         }
 
         private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
@@ -170,8 +170,16 @@ namespace Caro
 
                     this.Invoke((MethodInvoker)(() =>
                     {
-                        // 1️⃣ Chờ đối thủ
-                        if (message == "WAIT")
+
+                        if (message.StartsWith("OUT"))
+                        {
+                            string[] parts = message.Split('|');
+                            string outplayer = parts[1];
+                            txtStatus.AppendText(outplayer);
+                        }
+
+                            // 1️⃣ Chờ đối thủ
+                            if (message.StartsWith("WAIT"))
                         {
                             txtStatus.Text = "Đang chờ đối thủ...";
                             btnLAN.Enabled = false;
@@ -185,7 +193,17 @@ namespace Caro
                             string[] parts = message.Split('|');
                             string role = parts[1]; // X hoặc O
 
-                            txtStatus.Text = $"Bắt đầu game - Bạn là {role}";
+                            if(role == "O")
+                            {
+                                txtStatus.Text = "Bắt đầu game - Bạn là O";
+                                txtStatus.AppendText(Environment.NewLine + "Bạn được đánh đầu tiên");
+                            }
+                            else
+                            {
+                                txtStatus.Text = "Bắt đầu game - Bạn là X";
+                                txtStatus.AppendText(Environment.NewLine + "Đợi O đánh");
+                            }
+                           
                             pnl_chessBoard.Enabled = (role == "O");
                             myTurn = (role == "O"); // O đi trước
                             prcb_CoolDown.Value = 0;
@@ -213,7 +231,7 @@ namespace Caro
                         else if (message.StartsWith("TIMEOUT"))
                         {
                             string[] parts = message.Split('|');
-                            string winner = parts[1] == "P1"?"P2":"P1";
+                            string winner = parts[1] == "P1"?"Player2":"Player1";
                             this.Invoke((MethodInvoker)(() =>
                             {
                                 
