@@ -74,6 +74,7 @@ namespace Caro
                 prcb_CoolDown.Value = 0;
                 tm_CountDown.Stop();
                 ChessBoard.DrawChessBoard();
+                mnNewGame.Enabled = false;
                 pnl_chessBoard.Enabled = (isO);
                 myTurn = (isO); // O đi trước
                 prcb_CoolDown.Value = 0;
@@ -181,11 +182,9 @@ namespace Caro
 
         private void btnLAN_Click(object sender, EventArgs e)
         {
-            string ip = string.IsNullOrEmpty(txtIP.Text) ? "127.0.0.1" : txtIP.Text.Trim();
+            string ip ="127.0.0.1";
             try
             {
-
-
                 client = new TcpClient(ip, 9999);
                 stream = client.GetStream();
 
@@ -222,11 +221,12 @@ namespace Caro
                             string[] parts = message.Split('|');
                             string outplayer = parts[1];
                             txtStatus.AppendText(Environment.NewLine + outplayer);
+                            ChessBoard.DrawChessBoard();
                             pnl_chessBoard.Enabled = false;
                             tm_CountDown.Stop();
                             prcb_CoolDown.Enabled = false;
                             prcb_CoolDown.Value = 0;
-                            ChessBoard.DrawChessBoard();
+                            txtRoomName.Text = "";
                             btnLAN.Enabled = true;
                         }
 
@@ -244,7 +244,8 @@ namespace Caro
                             btnLAN.Enabled = false;
                             string[] parts = message.Split('|');
                             string role = parts[1]; // X hoặc O
-
+                            string roomname = parts[2];
+                            txtRoomName.Text = roomname;
                             if (role == "O")
                             {
                                 txtStatus.Text = "Bắt đầu game - Bạn là O";
@@ -400,7 +401,12 @@ namespace Caro
             }
             catch { }
         }
-        
+
+
+
+
         #endregion
+
+      
     }
 }

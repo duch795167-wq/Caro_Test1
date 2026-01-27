@@ -43,10 +43,15 @@ class Program
             NetworkStream s1 = p1.GetStream();
             NetworkStream s2 = p2.GetStream();
 
+            string roomname = RoomName();
+
             // Phân lượt
-            Send(p1, "START|O\n"); // p1 đi trước
+            Send(p1, "START|O|"+ roomname + "\n"); // p1 đi trước
             Thread.Sleep(100);
-            Send(p2, "START|X\n");
+            Send(p2, "START|X|"+ roomname + "\n");
+
+
+
             while (true)
             {
 
@@ -153,5 +158,13 @@ class Program
             return null;
         }
         
+    }
+
+
+    static string RoomName()
+    {
+        Random rd = new Random();
+
+        return "CARO-" + rd.Next(1000, 9999);
     }
 }

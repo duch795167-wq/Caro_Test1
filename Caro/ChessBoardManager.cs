@@ -49,7 +49,7 @@ namespace Caro
         }
 
         
-
+        // Tu
         private List<List<Button>> matrix;
         public List<List<Button>> Matrix
         {
@@ -87,6 +87,9 @@ namespace Caro
 
         #endregion
 
+        //Nhi
+
+
         #region Initialize
 
         public ChessBoardManager(Panel chessBoard, TextBox playerName,PictureBox mark)
@@ -106,6 +109,7 @@ namespace Caro
 
         #endregion
 
+        
         #region Methods
 
         public void MarkRemote(int x, int y)
@@ -191,6 +195,7 @@ namespace Caro
             }
         }
 
+        //Ny
         private bool isEndGame(Button btn)
         {
 
