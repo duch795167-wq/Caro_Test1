@@ -25,7 +25,8 @@ namespace Caro
         NetworkStream stream;
         Thread receiveThread;
         bool myTurn = false;
-
+        bool isO = false;
+        int newgame = 0;
 
         #endregion
         public Form1()
@@ -43,49 +44,100 @@ namespace Caro
             prcb_CoolDown.Maximum = Cons.COOL_DOWN_TIME;
             prcb_CoolDown.Value = 0;
             tm_CountDown.Interval = Cons.COOL_DOWN_INTERVAL;
+            newgame = 1;
+
 
             
-
-
-            NewGame();
+            NewGame(newgame);
             
         }
 
 
         #region Methods
+       
+
+        void NewGame(int newgame)
+        {
+            if (newgame == 1)
+            {
+                
+                prcb_CoolDown.Value = 0;
+                tm_CountDown.Stop();
+                ChessBoard.DrawChessBoard();
+                pnl_chessBoard.Enabled = false;
+                
+                mnNewGame.Enabled = false;
+                
+            }
+            else
+            {
+                prcb_CoolDown.Value = 0;
+                tm_CountDown.Stop();
+                ChessBoard.DrawChessBoard();
+                pnl_chessBoard.Enabled = (isO);
+                myTurn = (isO); // O đi trước
+                prcb_CoolDown.Value = 0;
+                txtStatus.Text = "Bắt đầu chơi lại";
+                
+            }
+        }
+
         void EndGame(string typeEnd)
         {
             tm_CountDown.Stop();
             pnl_chessBoard.Enabled = false;
-            
-            if(typeEnd == "TIMEOUT")
+
+            if (typeEnd == "TIMEOUT")
             {
                 MessageBox.Show("Da het gio");
                 SendTimeOut();
 
             }
-            else if(typeEnd == "WIN")
+            else if (typeEnd == "WIN")
             {
-                MessageBox.Show("Da co nguoi thang");
                 SendEnd();
+                MessageBox.Show("Da co nguoi thang");
+                
+                
             }
-        }
 
-        void NewGame()
-        {
-            
-            prcb_CoolDown.Value = 0;
-            tm_CountDown.Stop();
-            ChessBoard.DrawChessBoard();
-            pnl_chessBoard.Enabled = false;
 
         }
 
         void QuitGame()
         {
-            if(MessageBox.Show("Ban co chac muon thoat","Thong bao", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            try
             {
-               Application.Exit();
+                if (client != null && client.Connected)
+                {
+                    // Gửi thông báo cho server
+                    SendOut();
+                    stream?.Close();
+                    client?.Close();
+                }
+            }
+            catch { }
+
+
+        }
+
+        private void quitToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            
+            this.Close();
+        }
+
+        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            if (MessageBox.Show("Bạn có chắc muốn thoát game?",
+        "Thoát", MessageBoxButtons.OKCancel) == DialogResult.OK)
+            {
+                QuitGame();
+                
+            }
+            else
+            {
+                e.Cancel = true;
             }
         }
 
@@ -100,7 +152,7 @@ namespace Caro
 
         private void ChessBoard_EndedGame(object sender, EventArgs e)
         {
-            EndGame("");
+            EndGame("WIN");
         }
 
         private void tm_CountDown_Tick(object sender, EventArgs e)
@@ -117,23 +169,16 @@ namespace Caro
 
         private void newGameToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            NewGame();
+            
+            NewGame(newgame);
+            
         }
 
-        private void quitToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            QuitGame();
-        }
-
-        private void Form1_FormClosing(object sender, FormClosingEventArgs e)
-        {
-            if (MessageBox.Show("Ban co chac muon thoat", "Thong bao", MessageBoxButtons.OKCancel) != DialogResult.OK)
-                e.Cancel = true;
-        }
+        
 
 
         #endregion
-        
+
         private void btnLAN_Click(object sender, EventArgs e)
         {
             string ip = string.IsNullOrEmpty(txtIP.Text) ? "127.0.0.1" : txtIP.Text.Trim();
@@ -173,13 +218,20 @@ namespace Caro
 
                         if (message.StartsWith("OUT"))
                         {
+
                             string[] parts = message.Split('|');
                             string outplayer = parts[1];
-                            txtStatus.AppendText(outplayer);
+                            txtStatus.AppendText(Environment.NewLine + outplayer);
+                            pnl_chessBoard.Enabled = false;
+                            tm_CountDown.Stop();
+                            prcb_CoolDown.Enabled = false;
+                            prcb_CoolDown.Value = 0;
+                            ChessBoard.DrawChessBoard();
+                            btnLAN.Enabled = true;
                         }
 
-                            // 1️⃣ Chờ đối thủ
-                            if (message.StartsWith("WAIT"))
+                        // 1️⃣ Chờ đối thủ
+                        if (message.StartsWith("WAIT"))
                         {
                             txtStatus.Text = "Đang chờ đối thủ...";
                             btnLAN.Enabled = false;
@@ -193,21 +245,25 @@ namespace Caro
                             string[] parts = message.Split('|');
                             string role = parts[1]; // X hoặc O
 
-                            if(role == "O")
+                            if (role == "O")
                             {
                                 txtStatus.Text = "Bắt đầu game - Bạn là O";
-                                txtStatus.AppendText(Environment.NewLine + "Bạn được đánh đầu tiên");
+                                txtStatus.AppendText(Environment.NewLine + "Bạn là Player 1" 
+                                    + Environment.NewLine+ "Bạn được đánh đầu tiên");
+                                isO = true;
                             }
                             else
                             {
                                 txtStatus.Text = "Bắt đầu game - Bạn là X";
-                                txtStatus.AppendText(Environment.NewLine + "Đợi O đánh");
+                                txtStatus.AppendText(Environment.NewLine + "Bạn là Player 2" 
+                                    + Environment.NewLine + "Đợi O đánh");
+                                isO = false;
                             }
-                           
+
                             pnl_chessBoard.Enabled = (role == "O");
                             myTurn = (role == "O"); // O đi trước
                             prcb_CoolDown.Value = 0;
-                            
+
                         }
 
                         // 3️⃣ Nhận nước đi
@@ -218,6 +274,7 @@ namespace Caro
                             int y = int.Parse(parts[2]);
                             this.Invoke((MethodInvoker)(() =>
                             {
+
                                 ChessBoard.MarkRemote(x, y);
                                 myTurn = true;
                                 pnl_chessBoard.Enabled = true;
@@ -225,18 +282,34 @@ namespace Caro
                                 tm_CountDown.Start(); // ❗ tới lượt mình → chạy timer
                             }));
 
-                            
+
                         }
 
                         else if (message.StartsWith("TIMEOUT"))
                         {
                             string[] parts = message.Split('|');
-                            string winner = parts[1] == "P1"?"Player2":"Player1";
+                            string winner = parts[1] == "P1" ? "Player2" : "Player1";
                             this.Invoke((MethodInvoker)(() =>
                             {
-                                
+
                                 txtStatus.AppendText(Environment.NewLine + $"Người thắng: {winner}");
-                               
+
+                            }));
+                        }
+                        else if (message.StartsWith("WIN"))
+                        {
+                            string[] parts = message.Split('|');
+                            string winner = parts[1] == "P1" ? "Player1" : "Player2";
+                            this.Invoke((MethodInvoker)(() =>
+                            {
+
+                                txtStatus.AppendText(Environment.NewLine + $"Người thắng: {winner}");
+                                pnl_chessBoard.Enabled = false;
+                                tm_CountDown.Stop();
+                                prcb_CoolDown.Enabled = false;
+                                prcb_CoolDown.Value = 0;
+                                mnNewGame.Enabled = true;
+                                newgame++;
                             }));
                         }
 
@@ -261,6 +334,9 @@ namespace Caro
             prcb_CoolDown.Value = 0;
         }
 
+
+        #region SendMethod
+        
         void SendMove(int x, int y)
         {
             try
@@ -302,16 +378,9 @@ namespace Caro
         {
             try
             {
-                string msg = "Endgame\n";
+                string msg = "ENDGAME\n";
                 byte[] data = Encoding.UTF8.GetBytes(msg);
                 stream.Write(data, 0, data.Length);
-
-                myTurn = false;
-                tm_CountDown.Stop();
-                pnl_chessBoard.Enabled = false;
-                prcb_CoolDown.Enabled = false;
-                prcb_CoolDown.Value = 0;
-
 
             }
             catch
@@ -319,6 +388,19 @@ namespace Caro
                 MessageBox.Show("Lỗi end game");
             }
         }
+        void SendOut()
+        {
+            try
+            {
+                string msg = "OUT\n";
+                if (stream == null) return;
 
+                byte[] data = Encoding.UTF8.GetBytes(msg);
+                stream.Write(data, 0, data.Length);
+            }
+            catch { }
+        }
+        
+        #endregion
     }
 }

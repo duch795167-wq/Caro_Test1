@@ -34,6 +34,8 @@
             this.panel2 = new System.Windows.Forms.Panel();
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.panel3 = new System.Windows.Forms.Panel();
+            this.label3 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.label1 = new System.Windows.Forms.Label();
             this.btnLAN = new System.Windows.Forms.Button();
             this.txtIP = new System.Windows.Forms.TextBox();
@@ -42,12 +44,10 @@
             this.txt_PlayerName = new System.Windows.Forms.TextBox();
             this.tm_CountDown = new System.Windows.Forms.Timer(this.components);
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
-            this.menu = new System.Windows.Forms.ToolStripMenuItem();
-            this.newGameToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.quitToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnMenu = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnNewGame = new System.Windows.Forms.ToolStripMenuItem();
+            this.mnQuit = new System.Windows.Forms.ToolStripMenuItem();
             this.txtStatus = new System.Windows.Forms.TextBox();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
             this.label4 = new System.Windows.Forms.Label();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
@@ -104,6 +104,26 @@
             this.panel3.Name = "panel3";
             this.panel3.Size = new System.Drawing.Size(269, 244);
             this.panel3.TabIndex = 2;
+            // 
+            // label3
+            // 
+            this.label3.AutoSize = true;
+            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
+            this.label3.Location = new System.Drawing.Point(185, 19);
+            this.label3.Name = "label3";
+            this.label3.Size = new System.Drawing.Size(56, 18);
+            this.label3.TabIndex = 7;
+            this.label3.Text = "Kí hiệu ";
+            // 
+            // label2
+            // 
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(14, 19);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(109, 18);
+            this.label2.TabIndex = 6;
+            this.label2.Text = "Lượt đang đánh";
             // 
             // label1
             // 
@@ -172,7 +192,7 @@
             // 
             this.menuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
             this.menuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menu});
+            this.mnMenu});
             this.menuStrip1.Location = new System.Drawing.Point(0, 0);
             this.menuStrip1.Name = "menuStrip1";
             this.menuStrip1.Padding = new System.Windows.Forms.Padding(5, 2, 0, 2);
@@ -180,28 +200,28 @@
             this.menuStrip1.TabIndex = 3;
             this.menuStrip1.Text = "menuStrip1";
             // 
-            // menu
+            // mnMenu
             // 
-            this.menu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.newGameToolStripMenuItem,
-            this.quitToolStripMenuItem});
-            this.menu.Name = "menu";
-            this.menu.Size = new System.Drawing.Size(60, 24);
-            this.menu.Text = "Menu";
+            this.mnMenu.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.mnNewGame,
+            this.mnQuit});
+            this.mnMenu.Name = "mnMenu";
+            this.mnMenu.Size = new System.Drawing.Size(60, 24);
+            this.mnMenu.Text = "Menu";
             // 
-            // newGameToolStripMenuItem
+            // mnNewGame
             // 
-            this.newGameToolStripMenuItem.Name = "newGameToolStripMenuItem";
-            this.newGameToolStripMenuItem.Size = new System.Drawing.Size(165, 26);
-            this.newGameToolStripMenuItem.Text = "New Game";
-            this.newGameToolStripMenuItem.Click += new System.EventHandler(this.newGameToolStripMenuItem_Click);
+            this.mnNewGame.Name = "mnNewGame";
+            this.mnNewGame.Size = new System.Drawing.Size(224, 26);
+            this.mnNewGame.Text = "New Game";
+            this.mnNewGame.Click += new System.EventHandler(this.newGameToolStripMenuItem_Click);
             // 
-            // quitToolStripMenuItem
+            // mnQuit
             // 
-            this.quitToolStripMenuItem.Name = "quitToolStripMenuItem";
-            this.quitToolStripMenuItem.Size = new System.Drawing.Size(165, 26);
-            this.quitToolStripMenuItem.Text = "Quit";
-            this.quitToolStripMenuItem.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
+            this.mnQuit.Name = "mnQuit";
+            this.mnQuit.Size = new System.Drawing.Size(224, 26);
+            this.mnQuit.Text = "Quit";
+            this.mnQuit.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 
             // txtStatus
             // 
@@ -212,26 +232,6 @@
             this.txtStatus.ReadOnly = true;
             this.txtStatus.Size = new System.Drawing.Size(239, 162);
             this.txtStatus.TabIndex = 4;
-            // 
-            // label2
-            // 
-            this.label2.AutoSize = true;
-            this.label2.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label2.Location = new System.Drawing.Point(14, 19);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(109, 18);
-            this.label2.TabIndex = 6;
-            this.label2.Text = "Lượt đang đánh";
-            // 
-            // label3
-            // 
-            this.label3.AutoSize = true;
-            this.label3.Font = new System.Drawing.Font("Microsoft Sans Serif", 9F);
-            this.label3.Location = new System.Drawing.Point(185, 19);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(56, 18);
-            this.label3.TabIndex = 7;
-            this.label3.Text = "Kí hiệu ";
             // 
             // label4
             // 
@@ -286,9 +286,9 @@
         private System.Windows.Forms.Label label1;
         private System.Windows.Forms.Timer tm_CountDown;
         private System.Windows.Forms.MenuStrip menuStrip1;
-        private System.Windows.Forms.ToolStripMenuItem menu;
-        private System.Windows.Forms.ToolStripMenuItem newGameToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem quitToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem mnMenu;
+        private System.Windows.Forms.ToolStripMenuItem mnNewGame;
+        private System.Windows.Forms.ToolStripMenuItem mnQuit;
         private System.Windows.Forms.TextBox txtStatus;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Label label2;
