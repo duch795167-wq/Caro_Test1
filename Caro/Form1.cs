@@ -10,7 +10,7 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-
+using Guna.UI2;
 using System.Windows.Forms;
 
 namespace Caro
@@ -37,7 +37,6 @@ namespace Caro
             
             ChessBoard.EndedGame += ChessBoard_EndedGame;
             ChessBoard.PlayerMarked += ChessBoard_PlayerMarked;
-
             ChessBoard.PlayerMoved += ChessBoard_PlayerMoved;
 
             prcb_CoolDown.Step = Cons.COOL_DOWN_STEP;
@@ -45,9 +44,9 @@ namespace Caro
             prcb_CoolDown.Value = 0;
             tm_CountDown.Interval = Cons.COOL_DOWN_INTERVAL;
             newgame = 1;
-
-
             
+
+
             NewGame(newgame);
             
         }
@@ -65,7 +64,6 @@ namespace Caro
                 tm_CountDown.Stop();
                 ChessBoard.DrawChessBoard();
                 pnl_chessBoard.Enabled = false;
-                
                 mnNewGame.Enabled = false;
                 
             }
@@ -90,14 +88,14 @@ namespace Caro
 
             if (typeEnd == "TIMEOUT")
             {
-                MessageBox.Show("Da het gio");
+                MessageBox.Show("Đã hết giờ");
                 SendTimeOut();
 
             }
             else if (typeEnd == "WIN")
             {
                 SendEnd();
-                MessageBox.Show("Da co nguoi thang");
+                MessageBox.Show("Đã có người thắng");
                 
                 
             }
@@ -329,7 +327,7 @@ namespace Caro
             SendMove(x, y);
 
             myTurn = false;
-            pnl_chessBoard.Enabled = false;
+            
             
             prcb_CoolDown.Enabled = false;
             prcb_CoolDown.Value = 0;

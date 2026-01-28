@@ -58,7 +58,7 @@
             // 
             // pnl_chessBoard
             // 
-            this.pnl_chessBoard.BackColor = System.Drawing.SystemColors.Control;
+            this.pnl_chessBoard.BackColor = System.Drawing.Color.NavajoWhite;
             this.pnl_chessBoard.Location = new System.Drawing.Point(11, 72);
             this.pnl_chessBoard.Margin = new System.Windows.Forms.Padding(2);
             this.pnl_chessBoard.Name = "pnl_chessBoard";
@@ -259,14 +259,14 @@
             // mnNewGame
             // 
             this.mnNewGame.Name = "mnNewGame";
-            this.mnNewGame.Size = new System.Drawing.Size(180, 22);
+            this.mnNewGame.Size = new System.Drawing.Size(132, 22);
             this.mnNewGame.Text = "New Game";
             this.mnNewGame.Click += new System.EventHandler(this.newGameToolStripMenuItem_Click);
             // 
             // mnQuit
             // 
             this.mnQuit.Name = "mnQuit";
-            this.mnQuit.Size = new System.Drawing.Size(180, 22);
+            this.mnQuit.Size = new System.Drawing.Size(132, 22);
             this.mnQuit.Text = "Quit";
             this.mnQuit.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
             // 

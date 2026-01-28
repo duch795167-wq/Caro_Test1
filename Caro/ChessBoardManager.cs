@@ -5,7 +5,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
-
+using Guna.UI2;
+using Guna.UI2.WinForms;
 namespace Caro
 {
     public class ChessBoardManager
@@ -50,8 +51,8 @@ namespace Caro
 
         
         // Tu
-        private List<List<Button>> matrix;
-        public List<List<Button>> Matrix
+        private List<List<Guna2Button>> matrix;
+        public List<List<Guna2Button>> Matrix
         {
             get { return matrix; }
             set { matrix = value; }
@@ -114,12 +115,12 @@ namespace Caro
 
         public void MarkRemote(int x, int y)
         {
-            Button btn = Matrix[y][x];
+            Guna2Button btn = Matrix[y][x];
 
-            if (btn.BackgroundImage != null)
+            if (btn.Image != null)
                 return;
 
-            btn.BackgroundImage = Player[CurrentPlayer].Mark;
+            btn.Image = Player[CurrentPlayer].Mark;
             Mark(btn);
             ChangePlayer();
         }
@@ -129,19 +130,22 @@ namespace Caro
             ChessBoard.Controls.Clear();
             CurrentPlayer = 0;
             ChangePlayer();
-            Matrix = new List<List<Button>>();
-            Button oldButton = new Button() { Width = 0, Location = new Point(0, 0) };
+            Matrix = new List<List<Guna2Button>>();
+            Guna2Button oldButton = new Guna2Button() { Width = 0, Location = new Point(0, 0) };
             for (int i = 0; i < Cons.CHESS_BOARD_HEIGHT; i++)
             {
-                Matrix.Add(new List<Button>());
+                Matrix.Add(new List<Guna2Button>());
                 for (int j = 0; j < Cons.CHESS_BOARD_WIDTH; j++)
                 {
-                    Button btn = new Button()
+                    Guna2Button btn = new Guna2Button()
                     {
                         Width = Cons.CHESS_WIDTH,
                         Height = Cons.CHESS_HEIGHT,
                         Location = new Point(oldButton.Location.X + oldButton.Width, oldButton.Location.Y),
-                        BackgroundImageLayout = ImageLayout.Stretch,
+                        FillColor = Color.White,
+                        BorderRadius = 2,
+                        BorderThickness = 2,
+                        BorderColor = Color.Black,
                         Tag = i.ToString()
                     };
                     btn.Click += btn_Click; 
@@ -160,9 +164,9 @@ namespace Caro
 
         private void btn_Click(object sender, EventArgs e)
         {
-            Button btn = sender as Button;
+            Guna2Button btn = sender as Guna2Button;
 
-            if (btn.BackgroundImage != null) 
+            if (btn.Image != null) 
                 return;
 
 
@@ -196,13 +200,13 @@ namespace Caro
         }
 
         //Ny
-        private bool isEndGame(Button btn)
+        private bool isEndGame(Guna2Button btn)
         {
 
             return isEndHorizontal(btn) || isEndVertical(btn) || isEndPrimary(btn) || isEndSub(btn);
         }
 
-        private Point GetChessPoint(Button btn)
+        private Point GetChessPoint(Guna2Button btn)
         {
             int vertical = Convert.ToInt32(btn.Tag);
             int horizontal = Matrix[vertical].IndexOf(btn);
@@ -212,13 +216,13 @@ namespace Caro
             return point;
         }
 
-        private bool isEndHorizontal(Button btn)
+        private bool isEndHorizontal(Guna2Button btn)
         {
             Point point = GetChessPoint(btn);
             int countLeft = 0;
             for (int i = point.X; i >=0; i--)
             {
-                if (Matrix[point.Y][i].BackgroundImage == btn.BackgroundImage)
+                if (Matrix[point.Y][i].Image == btn.Image)
                 {
                     countLeft++;
                 }
@@ -231,7 +235,7 @@ namespace Caro
             int countRight = 0;
             for (int i = point.X + 1; i < Cons.CHESS_BOARD_WIDTH; i++)
             {
-                if (Matrix[point.Y][i].BackgroundImage == btn.BackgroundImage)
+                if (Matrix[point.Y][i].Image == btn.Image)
                 {
                     countRight++;
                 }
@@ -243,14 +247,14 @@ namespace Caro
             return countLeft + countRight >= 5;
         }
 
-        private bool isEndVertical(Button btn)
+        private bool isEndVertical(Guna2Button btn)
         {
 
             Point point = GetChessPoint(btn);
             int countUp = 0;
             for (int i = point.Y; i >= 0; i--)
             {
-                if (Matrix[i][point.X].BackgroundImage == btn.BackgroundImage)
+                if (Matrix[i][point.X].Image == btn.Image)
                 {
                     countUp++;
                 }
@@ -263,7 +267,7 @@ namespace Caro
             int countDown = 0;
             for (int i = point.Y + 1; i < Cons.CHESS_BOARD_HEIGHT; i++)
             {
-                if (Matrix[i][point.X].BackgroundImage == btn.BackgroundImage)
+                if (Matrix[i][point.X].Image == btn.Image)
                 {
                     countDown++;
                 }
@@ -275,7 +279,7 @@ namespace Caro
             return countUp + countDown >= 5;
         }
 
-        private bool isEndPrimary(Button btn)
+        private bool isEndPrimary(Guna2Button btn)
         {
             Point point = GetChessPoint(btn);
 
@@ -283,7 +287,7 @@ namespace Caro
             // Lên - Trái (X--, Y--)
             for (int x = point.X, y = point.Y; x >= 0 && y >= 0; x--, y--)
             {
-                if (Matrix[y][x].BackgroundImage == btn.BackgroundImage)
+                if (Matrix[y][x].Image == btn.Image)
                     countUpLeft++;
                 else
                     break;
@@ -294,7 +298,7 @@ namespace Caro
                  x < Cons.CHESS_BOARD_WIDTH && y < Cons.CHESS_BOARD_HEIGHT;
                  x++, y++)
             {
-                if (Matrix[y][x].BackgroundImage == btn.BackgroundImage)
+                if (Matrix[y][x].Image == btn.Image)
                     countDownRight++;
                 else
                     break;
@@ -303,7 +307,7 @@ namespace Caro
             return countUpLeft + countDownRight >= 5;
         }
 
-        private bool isEndSub(Button btn)
+        private bool isEndSub(Guna2Button btn)
         {
 
             Point point = GetChessPoint(btn);
@@ -314,7 +318,7 @@ namespace Caro
                  x < Cons.CHESS_BOARD_WIDTH && y >= 0;
                  x++, y--)
             {
-                if (Matrix[y][x].BackgroundImage == btn.BackgroundImage)
+                if (Matrix[y][x].Image == btn.Image)
                     countUpRight++;
                 else
                     break;
@@ -326,7 +330,7 @@ namespace Caro
                  x >= 0 && y < Cons.CHESS_BOARD_HEIGHT;
                  x--, y++)
             {
-                if (Matrix[y][x].BackgroundImage == btn.BackgroundImage)
+                if (Matrix[y][x].Image == btn.Image)
                     countDownLeft++;
                 else
                     break;
@@ -336,9 +340,9 @@ namespace Caro
         }
 
 
-        private void Mark(Button btn)
+        private void Mark(Guna2Button btn)
         {
-            btn.BackgroundImage = Player[CurrentPlayer].Mark;
+            btn.Image = Player[CurrentPlayer].Mark;
             CurrentPlayer = CurrentPlayer == 1 ? 0 : 1;
         }
 
