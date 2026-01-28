@@ -62,13 +62,18 @@ class Program
                 if (s1.DataAvailable)
                 {
                     string msg1 = Receive(s1);
+                    
                     if (msg1.StartsWith("OUT"))
                     {
                         Send(p2, "OUT|Người chơi 1 đã thoát");
                         p2.Close();
                         break;
                     }
-                    
+
+                    if (msg1.StartsWith("CHAT"))
+                    {
+                        Send(p2, msg1);
+                    }
 
                     if (msg1.StartsWith("MOVE"))
                     {
@@ -97,6 +102,11 @@ class Program
                         Send(p1, "OUT|Người chơi 2 đã thoát");
                         p1.Close();
                         break;
+                    }
+
+                    if (msg2.StartsWith("CHAT"))
+                    {
+                        Send(p1, msg2);
                     }
 
                     if (msg2.StartsWith("MOVE"))

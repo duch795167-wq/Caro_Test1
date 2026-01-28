@@ -49,6 +49,9 @@
             this.mnMenu = new System.Windows.Forms.ToolStripMenuItem();
             this.mnNewGame = new System.Windows.Forms.ToolStripMenuItem();
             this.mnQuit = new System.Windows.Forms.ToolStripMenuItem();
+            this.txtChat = new System.Windows.Forms.TextBox();
+            this.txtChatInput = new System.Windows.Forms.TextBox();
+            this.btnSendChat = new Guna.UI2.WinForms.Guna2Button();
             this.panel2.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
             this.panel3.SuspendLayout();
@@ -58,8 +61,8 @@
             // 
             // pnl_chessBoard
             // 
-            this.pnl_chessBoard.BackColor = System.Drawing.Color.NavajoWhite;
-            this.pnl_chessBoard.Location = new System.Drawing.Point(11, 72);
+            this.pnl_chessBoard.BackColor = System.Drawing.Color.Transparent;
+            this.pnl_chessBoard.Location = new System.Drawing.Point(11, 93);
             this.pnl_chessBoard.Margin = new System.Windows.Forms.Padding(2);
             this.pnl_chessBoard.Name = "pnl_chessBoard";
             this.pnl_chessBoard.Size = new System.Drawing.Size(480, 510);
@@ -69,7 +72,7 @@
             // 
             this.panel2.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.panel2.Controls.Add(this.pictureBox1);
-            this.panel2.Location = new System.Drawing.Point(777, 75);
+            this.panel2.Location = new System.Drawing.Point(777, 60);
             this.panel2.Margin = new System.Windows.Forms.Padding(2);
             this.panel2.Name = "panel2";
             this.panel2.Size = new System.Drawing.Size(202, 219);
@@ -81,7 +84,7 @@
             this.pictureBox1.BackColor = System.Drawing.SystemColors.AppWorkspace;
             this.pictureBox1.BackgroundImage = global::Caro.Properties.Resources.back_caro;
             this.pictureBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.pictureBox1.Location = new System.Drawing.Point(2, 3);
+            this.pictureBox1.Location = new System.Drawing.Point(2, 2);
             this.pictureBox1.Margin = new System.Windows.Forms.Padding(2);
             this.pictureBox1.Name = "pictureBox1";
             this.pictureBox1.Size = new System.Drawing.Size(195, 213);
@@ -163,7 +166,7 @@
             // txtStatus
             // 
             this.txtStatus.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
-            this.txtStatus.Location = new System.Drawing.Point(542, 99);
+            this.txtStatus.Location = new System.Drawing.Point(542, 63);
             this.txtStatus.Margin = new System.Windows.Forms.Padding(2);
             this.txtStatus.Multiline = true;
             this.txtStatus.Name = "txtStatus";
@@ -176,7 +179,7 @@
             this.label4.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.label4.AutoSize = true;
             this.label4.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.label4.Location = new System.Drawing.Point(587, 72);
+            this.label4.Location = new System.Drawing.Point(579, 34);
             this.label4.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(107, 25);
@@ -188,7 +191,7 @@
             this.lblRoomName.Anchor = ((System.Windows.Forms.AnchorStyles)((System.Windows.Forms.AnchorStyles.Top | System.Windows.Forms.AnchorStyles.Right)));
             this.lblRoomName.AutoSize = true;
             this.lblRoomName.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
-            this.lblRoomName.Location = new System.Drawing.Point(629, 24);
+            this.lblRoomName.Location = new System.Drawing.Point(204, 24);
             this.lblRoomName.Name = "lblRoomName";
             this.lblRoomName.Size = new System.Drawing.Size(107, 25);
             this.lblRoomName.TabIndex = 6;
@@ -197,17 +200,18 @@
             // 
             // btnLAN
             // 
+            this.btnLAN.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(255)))), ((int)(((byte)(224)))), ((int)(((byte)(192)))));
             this.btnLAN.BorderRadius = 10;
             this.btnLAN.BorderThickness = 1;
             this.btnLAN.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
             this.btnLAN.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
-            this.btnLAN.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
-            this.btnLAN.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnLAN.DisabledState.FillColor = System.Drawing.Color.DarkGray;
+            this.btnLAN.DisabledState.ForeColor = System.Drawing.Color.Black;
             this.btnLAN.Font = new System.Drawing.Font("Segoe UI", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.btnLAN.ForeColor = System.Drawing.Color.White;
-            this.btnLAN.Location = new System.Drawing.Point(573, 341);
+            this.btnLAN.ForeColor = System.Drawing.SystemColors.Window;
+            this.btnLAN.Location = new System.Drawing.Point(569, 284);
             this.btnLAN.Name = "btnLAN";
-            this.btnLAN.Size = new System.Drawing.Size(143, 50);
+            this.btnLAN.Size = new System.Drawing.Size(143, 44);
             this.btnLAN.TabIndex = 9;
             this.btnLAN.Text = "Tạo phòng";
             this.btnLAN.Click += new System.EventHandler(this.btnLAN_Click);
@@ -224,7 +228,7 @@
             this.txtRoomName.FocusedState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
             this.txtRoomName.Font = new System.Drawing.Font("Segoe UI", 9F);
             this.txtRoomName.HoverState.BorderColor = System.Drawing.Color.FromArgb(((int)(((byte)(94)))), ((int)(((byte)(148)))), ((int)(((byte)(255)))));
-            this.txtRoomName.Location = new System.Drawing.Point(777, 24);
+            this.txtRoomName.Location = new System.Drawing.Point(154, 52);
             this.txtRoomName.Name = "txtRoomName";
             this.txtRoomName.PlaceholderText = "";
             this.txtRoomName.SelectedText = "";
@@ -259,16 +263,51 @@
             // mnNewGame
             // 
             this.mnNewGame.Name = "mnNewGame";
-            this.mnNewGame.Size = new System.Drawing.Size(132, 22);
+            this.mnNewGame.Size = new System.Drawing.Size(180, 22);
             this.mnNewGame.Text = "New Game";
             this.mnNewGame.Click += new System.EventHandler(this.newGameToolStripMenuItem_Click);
             // 
             // mnQuit
             // 
             this.mnQuit.Name = "mnQuit";
-            this.mnQuit.Size = new System.Drawing.Size(132, 22);
+            this.mnQuit.Size = new System.Drawing.Size(180, 22);
             this.mnQuit.Text = "Quit";
             this.mnQuit.Click += new System.EventHandler(this.quitToolStripMenuItem_Click);
+            // 
+            // txtChat
+            // 
+            this.txtChat.Font = new System.Drawing.Font("Microsoft Sans Serif", 10F);
+            this.txtChat.Location = new System.Drawing.Point(542, 334);
+            this.txtChat.Multiline = true;
+            this.txtChat.Name = "txtChat";
+            this.txtChat.Size = new System.Drawing.Size(194, 211);
+            this.txtChat.TabIndex = 11;
+            // 
+            // txtChatInput
+            // 
+            this.txtChatInput.Font = new System.Drawing.Font("Microsoft Sans Serif", 15F);
+            this.txtChatInput.Location = new System.Drawing.Point(542, 566);
+            this.txtChatInput.Name = "txtChatInput";
+            this.txtChatInput.Size = new System.Drawing.Size(144, 30);
+            this.txtChatInput.TabIndex = 12;
+            // 
+            // btnSendChat
+            // 
+            this.btnSendChat.BorderColor = System.Drawing.Color.DarkBlue;
+            this.btnSendChat.BorderRadius = 10;
+            this.btnSendChat.BorderThickness = 1;
+            this.btnSendChat.DisabledState.BorderColor = System.Drawing.Color.DarkGray;
+            this.btnSendChat.DisabledState.CustomBorderColor = System.Drawing.Color.DarkGray;
+            this.btnSendChat.DisabledState.FillColor = System.Drawing.Color.FromArgb(((int)(((byte)(169)))), ((int)(((byte)(169)))), ((int)(((byte)(169)))));
+            this.btnSendChat.DisabledState.ForeColor = System.Drawing.Color.FromArgb(((int)(((byte)(141)))), ((int)(((byte)(141)))), ((int)(((byte)(141)))));
+            this.btnSendChat.Font = new System.Drawing.Font("Times New Roman", 15F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.btnSendChat.ForeColor = System.Drawing.Color.White;
+            this.btnSendChat.Location = new System.Drawing.Point(692, 566);
+            this.btnSendChat.Name = "btnSendChat";
+            this.btnSendChat.Size = new System.Drawing.Size(69, 30);
+            this.btnSendChat.TabIndex = 13;
+            this.btnSendChat.Text = "Gửi";
+            this.btnSendChat.Click += new System.EventHandler(this.btnSendChat_Click);
             // 
             // Form1
             // 
@@ -276,7 +315,10 @@
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(243)))), ((int)(((byte)(230)))), ((int)(((byte)(216)))));
             this.BackgroundImageLayout = System.Windows.Forms.ImageLayout.Stretch;
-            this.ClientSize = new System.Drawing.Size(979, 635);
+            this.ClientSize = new System.Drawing.Size(979, 670);
+            this.Controls.Add(this.btnSendChat);
+            this.Controls.Add(this.txtChatInput);
+            this.Controls.Add(this.txtChat);
             this.Controls.Add(this.txtRoomName);
             this.Controls.Add(this.btnLAN);
             this.Controls.Add(this.lblRoomName);
@@ -325,6 +367,9 @@
         private System.Windows.Forms.Label lblRoomName;
         private Guna.UI2.WinForms.Guna2Button btnLAN;
         private Guna.UI2.WinForms.Guna2TextBox txtRoomName;
+        private System.Windows.Forms.TextBox txtChat;
+        private System.Windows.Forms.TextBox txtChatInput;
+        private Guna.UI2.WinForms.Guna2Button btnSendChat;
     }
 }
 

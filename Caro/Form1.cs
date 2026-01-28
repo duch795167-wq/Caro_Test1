@@ -27,6 +27,7 @@ namespace Caro
         bool myTurn = false;
         bool isO = false;
         int newgame = 0;
+        int newChat = 0;
 
         #endregion
         public Form1()
@@ -44,7 +45,7 @@ namespace Caro
             prcb_CoolDown.Value = 0;
             tm_CountDown.Interval = Cons.COOL_DOWN_INTERVAL;
             newgame = 1;
-            
+            btnLAN.DisabledState.FillColor = Color.White;
 
 
             NewGame(newgame);
@@ -180,6 +181,7 @@ namespace Caro
 
         private void btnLAN_Click(object sender, EventArgs e)
         {
+            
             string ip ="127.0.0.1";
             try
             {
@@ -226,6 +228,15 @@ namespace Caro
                             prcb_CoolDown.Value = 0;
                             txtRoomName.Text = "";
                             btnLAN.Enabled = true;
+                        }
+
+                        if (message.StartsWith("CHAT"))
+                        {
+                            string[] parts = message.Split('|');
+                            string senderName = parts[1];
+                            string chatMsg = parts[2];
+
+                            txtChat.AppendText($"{senderName}: {chatMsg}\r\n");
                         }
 
                         // 1️⃣ Chờ đối thủ
@@ -292,6 +303,12 @@ namespace Caro
                             {
 
                                 txtStatus.AppendText(Environment.NewLine + $"Người thắng: {winner}");
+                                pnl_chessBoard.Enabled = false;
+                                tm_CountDown.Stop();
+                                prcb_CoolDown.Enabled = false;
+                                prcb_CoolDown.Value = 0;
+                                mnNewGame.Enabled = true;
+                                newgame++;
 
                             }));
                         }
@@ -400,11 +417,35 @@ namespace Caro
             catch { }
         }
 
+        void SendChat(string msg)
+        {
+            try
+            {
+                
+                if (stream == null) return;
+                    
+                byte[] data = Encoding.UTF8.GetBytes(msg);
+                stream.Write(data, 0, data.Length);
+            }
+            catch { }
+        }
 
 
 
         #endregion
 
-      
+        private void btnSendChat_Click(object sender, EventArgs e)
+        {
+            if (string.IsNullOrWhiteSpace(txtChatInput.Text)) return;
+            
+            string name = (isO)?"Player1":"Player2";
+            string msg = $"CHAT|{name}|{txtChatInput.Text}\n";
+            txtChat.AppendText($"{name} : {txtChatInput.Text}" + Environment.NewLine);
+            
+
+                SendChat(msg);
+            txtChatInput.Clear();
+            
+        }
     }
 }

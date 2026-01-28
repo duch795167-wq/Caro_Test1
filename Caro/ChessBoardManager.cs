@@ -142,12 +142,17 @@ namespace Caro
                         Width = Cons.CHESS_WIDTH,
                         Height = Cons.CHESS_HEIGHT,
                         Location = new Point(oldButton.Location.X + oldButton.Width, oldButton.Location.Y),
+                        
                         FillColor = Color.White,
-                        BorderRadius = 2,
-                        BorderThickness = 2,
+                        BorderRadius = 8,
+                        BorderThickness = 1,
                         BorderColor = Color.Black,
+                        
                         Tag = i.ToString()
                     };
+                    btn.DisabledState.FillColor = btn.FillColor;
+                    btn.DisabledState.BorderColor = btn.BorderColor;
+                    
                     btn.Click += btn_Click; 
                     ChessBoard.Controls.Add(btn);
 
@@ -343,6 +348,7 @@ namespace Caro
         private void Mark(Guna2Button btn)
         {
             btn.Image = Player[CurrentPlayer].Mark;
+            btn.DisabledState.Image = Player[CurrentPlayer].Mark;
             CurrentPlayer = CurrentPlayer == 1 ? 0 : 1;
         }
 
